@@ -17,7 +17,7 @@ bucket_name = 'apod-bucket'
 
 # NASA APOD API Configuration
 nasa_api_key = 'yBYI28eM78itihb0vV0ewYtZdhgNmjYKaDHr2tia'
-api_url = f'https://api.nasa.gov/planetary/apod?api_key={nasa_api_key}&count=100'  # Fetch 5 random APOD images
+api_url = f'https://api.nasa.gov/planetary/apod?api_key={nasa_api_key}&count=100'  # Fetch 100 random APOD items
 
 def fetch_apod_data():
     try:
@@ -25,11 +25,22 @@ def fetch_apod_data():
 
         if response.status_code == 200:
             apod_data = response.json()
+
+            # Filter out entries that are not images
+            valid_images = [
+                item for item in apod_data
+                if item['media_type'] == 'image' and item['url'].lower().endswith(('.jpg', '.jpeg', '.png'))
+            ]
+
+            if not valid_images:
+                print("No valid images found.")
+                return
+
             file_name = f'apod_{datetime.now().strftime("%Y%m%d")}.json'
 
-            # Save APOD data locally
+            # Save only valid image data locally
             with open(file_name, 'w') as file:
-                json.dump(apod_data, file)
+                json.dump(valid_images, file)
 
             # Upload JSON data to LocalStack S3
             try:
