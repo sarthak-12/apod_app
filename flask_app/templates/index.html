@@ -1,34 +1,205 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NASA APOD Dashboard</title>
     <style>
+        /* Basic layout and font */
+        body {
+            font-family: 'Garamond', serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-size: cover;
+            background-position: center;
+            transition: background-image 0.5s ease-in-out;
+            background-color: #cccccc; /* Using local background image */
+        }
+
+        /* Title Box and Animation */
+        #dashboard-title-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid #fff;
+            padding: 20px 40px;
+            font-size: 28px; /* Slightly smaller title font for more space */
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: top 1.2s ease, transform 1.2s ease;
+        }
+
+        #dashboard-title-box.move-up {
+            top: 7%;
+            transform: translate(-50%, 0);
+        }
+
         .apod-container {
             display: flex;
             flex-wrap: wrap;
+            justify-content: center;
+            gap: 50px; /* Increased spacing between smaller cards */
+            margin: 40px auto;
+            max-width: 1000px; /* Reduced the max-width to fit more cards */
+            padding-top: 120px; /* Push down content to leave space for title */
         }
-        .apod-item {
-            margin: 20px;
-            width: 300px;
-            text-align: center;
+
+        /* Card styling */
+        .apod-card {
+            perspective: 1000px;
+            width: 220px;  /* Smaller card size */
+            height: 300px; /* Adjusted card height */
         }
-        .apod-item img {
+
+        .apod-card-inner {
+            position: relative;
             width: 100%;
-            height: auto;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .apod-card.flipped .apod-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        /* Front and back of card */
+        .apod-card-front, .apod-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .apod-card-front {
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .apod-card-front img {
+            border-radius: 10px;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .apod-card-back {
+            background-color: #fff;
+            color: black;
+            padding: 15px; /* Reduced padding */
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Meta data layout */
+        .apod-title {
+            font-size: 18px; /* Smaller title size */
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .apod-description {
+            font-size: 14px;
+            text-align: center;
+            max-height: 90px;
+            overflow: auto;
+        }
+
+        /* Background change style */
+        .background-filter {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-size: cover;
+            background-position: center;
+            filter: brightness(90%) blur(5px) contrast(1.1);
+            opacity: 0.85;
+            transition: background-image 0.5s ease-in-out, opacity 0.5s ease-in-out;
         }
     </style>
 </head>
 <body>
-    <h1>NASA APOD Dashboard</h1>
+
+    <!-- Title with border that moves up -->
+    <div id="dashboard-title-box">NASA APOD Dashboard</div>
+
     <div class="apod-container">
-        {% for apod in apod_data.iterrows() %}
-        <div class="apod-item">
-            <h2>{{ apod[1]['apod_title'] }}</h2>
-            <img src="{{ apod[1]['image_url'] }}" alt="{{ apod[1]['apod_title'] }}">
-            <p>{{ apod[1]['description'] }}</p>
-            <p><strong>Date:</strong> {{ apod[1]['apod_date'] }}</p>
+        {% for index, apod in apod_data.iterrows() %}
+        <div class="apod-card" onclick="toggleFlip(this); changeBackground('{{ apod['image_url'] }}')">
+            <div class="apod-card-inner">
+                <div class="apod-card-front">
+                    <img src="{{ apod['image_url'] }}" alt="{{ apod['apod_title'] }}">
+                </div>
+                <div class="apod-card-back">
+                    <div class="apod-title">{{ apod['apod_title'] }}</div>
+                    <div class="apod-description">{{ apod['description'] }}</div>
+                    <div><strong>Date:</strong> {{ apod['apod_date'] }}</div>
+                </div>
+            </div>
         </div>
         {% endfor %}
     </div>
+
+    <!-- White-filtered background -->
+    <div class="background-filter"></div>
+
+    <script>
+        // Toggle card flip
+        function toggleFlip(cardElement) {
+            cardElement.classList.toggle('flipped');
+        }
+
+        // Change background and adjust title text color based on the image
+        function changeBackground(imageUrl) {
+            const backgroundFilter = document.querySelector('.background-filter');
+            const title = document.getElementById('dashboard-title-box');
+
+            // Set the background image with a light transparent filter
+            backgroundFilter.style.backgroundImage = `url(${imageUrl})`;
+
+            // Dynamically adjust the title color based on background brightness
+            const img = new Image();
+            img.src = imageUrl;
+
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, 1, 1);
+                const pixel = ctx.getImageData(0, 0, 1, 1).data;
+                const brightness = (pixel[0] * 0.299 + pixel[1] * 0.587 + pixel[2] * 0.114) / 255;
+
+                // Set title to black or white depending on background brightness
+                if (brightness > 0.5) {
+                    title.style.color = '#000';
+                } else {
+                    title.style.color = '#fff';
+                }
+            };
+        }
+
+        // Animation to move the title up after page load
+        window.onload = function() {
+            const titleBox = document.getElementById('dashboard-title-box');
+            setTimeout(() => {
+                titleBox.classList.add('move-up');
+            }, 500); // Wait 1 second before moving up
+        }
+    </script>
 </body>
 </html>
