@@ -16,7 +16,7 @@ localstack_s3 = boto3.client(
 bucket_name = 'apod-bucket'
 
 # NASA APOD API Configuration
-nasa_api_key = 'yBYI28eM78itihb0vV0ewYtZdhgNmjYKaDHr2tia'
+nasa_api_key = 'your-key-here'
 api_url = f'https://api.nasa.gov/planetary/apod?api_key={nasa_api_key}&count=100'  # Fetch 100 random APOD items
 
 def fetch_apod_data():
