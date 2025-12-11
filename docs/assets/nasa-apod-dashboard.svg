@@ -1,0 +1,57 @@
+<svg width="1366" height="900" viewBox="0 0 1366 900" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">NASA APOD Dashboard</title>
+  <desc id="desc">Stylized preview of the APOD dashboard showing five image cards on a soft night-sky background.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1c2c46" />
+      <stop offset="50%" stop-color="#1f2f49" />
+      <stop offset="100%" stop-color="#122034" />
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.28)" />
+      <stop offset="100%" stop-color="rgba(255,255,255,0.16)" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="20" flood-color="#0b1320" flood-opacity="0.4" />
+    </filter>
+    <clipPath id="roundedCard">
+      <rect x="0" y="0" rx="18" ry="18" width="200" height="280" />
+    </clipPath>
+  </defs>
+
+  <rect width="1366" height="900" fill="url(#bg)" />
+  <circle cx="320" cy="220" r="260" fill="#ffffff" opacity="0.05" />
+  <circle cx="1060" cy="720" r="240" fill="#79a2d3" opacity="0.08" />
+
+  <g filter="url(#shadow)" transform="translate(233 140)">
+    <rect x="0" y="0" width="900" height="620" rx="36" fill="url(#panel)" stroke="rgba(255,255,255,0.45)" stroke-width="2" />
+
+    <g transform="translate(50 130)">
+      <g transform="translate(0 0)">
+        <rect width="200" height="280" rx="18" fill="#c0c0c0" clip-path="url(#roundedCard)" />
+        <image href="https://images.unsplash.com/photo-1514516430032-7f40ed986722?auto=format&fit=crop&w=400&q=60" width="200" height="280" clip-path="url(#roundedCard)" preserveAspectRatio="xMidYMid slice" />
+      </g>
+      <g transform="translate(170 12)">
+        <rect width="200" height="280" rx="18" fill="#dfe6ef" clip-path="url(#roundedCard)" />
+        <image href="https://images.unsplash.com/photo-1586776977607-310e9c725c68?auto=format&fit=crop&w=400&q=60" width="200" height="280" clip-path="url(#roundedCard)" preserveAspectRatio="xMidYMid slice" />
+      </g>
+      <g transform="translate(340 -8)">
+        <rect width="200" height="280" rx="18" fill="#101010" clip-path="url(#roundedCard)" />
+        <image href="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=400&q=60" width="200" height="280" clip-path="url(#roundedCard)" preserveAspectRatio="xMidYMid slice" />
+      </g>
+      <g transform="translate(510 6)">
+        <rect width="200" height="280" rx="18" fill="#efefef" clip-path="url(#roundedCard)" />
+        <image href="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=400&q=60" width="200" height="280" clip-path="url(#roundedCard)" preserveAspectRatio="xMidYMid slice" />
+      </g>
+      <g transform="translate(680 -14)">
+        <rect width="200" height="280" rx="18" fill="#c9d7e7" clip-path="url(#roundedCard)" />
+        <image href="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=400&q=60" width="200" height="280" clip-path="url(#roundedCard)" preserveAspectRatio="xMidYMid slice" />
+      </g>
+    </g>
+  </g>
+
+  <g filter="url(#shadow)" transform="translate(483 56)">
+    <rect width="400" height="70" rx="8" fill="#f5f7fb" stroke="#c8d5e5" stroke-width="2" />
+    <text x="200" y="44" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="28" font-weight="600" fill="#24364f" text-anchor="middle">NASA APOD Dashboard</text>
+  </g>
+</svg>
