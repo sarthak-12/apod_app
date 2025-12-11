@@ -2,7 +2,7 @@
 
 A tiny data pipeline that fetches NASA Astronomy Picture of the Day (APOD) entries, stages them in a LocalStack S3 bucket, curates them with PySpark, and serves a dashboard with Flask.
 
-![NASA APOD Dashboard](docs/assets/nasa-apod-dashboard.svg)
+![NASA APOD Dashboard](ui.jpg)
 
 ## Why this exists
 - **Sandboxed cloud feel:** Use LocalStack to practice S3-based data flows without touching real AWS.
